@@ -1,0 +1,58 @@
+<div *ngIf="feedback.feedbackType === 'error'" class="alert alert-danger d-flex align-items-center" role="alert">
+  <div><img src="assets/img/warning.png" alt="warning" class="ms-2" style="width: 30px; height: auto;"></div>
+  <span>{{ feedback.feedbackmsg }}</span>
+</div>
+
+<div *ngIf="isLoadingPage" class="container mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      <!-- Product List -->
+      <h2 class="text-center mb-4">Products</h2>
+      <div class="row">
+        <div *ngFor="let prod of product" class="col-md-6 mb-4">
+          <div class="card shadow-sm h-100">
+            <img [src]="prod.pictureUrl" class="card-img-top p-3" style="max-height: 150px; object-fit: contain;" />
+            <div class="card-body text-center">
+              <h5 class="card-title">{{ prod.name }}</h5>
+              <p class="card-text">Price: <strong>{{ prod.price }} €</strong></p>
+              <div class="input-group mb-3 justify-content-center">
+                <span class="input-group-text">Qty</span>
+                <input type="number" class="form-control w-25 text-center" min ="0" [(ngModel)]="prod.quantity" value = 0>
+              </div>              
+              <button type="button" [disabled]="prod.quantity <= 0" class="btn btn-primary w-100" (click)="addCart(prod)">
+                <i class="bi bi-cart-plus me-2"></i>ADD
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <!-- Cart List -->
+      <h2 class="text-center mb-4">Cart</h2>
+      <div *ngIf="cart.length === 0" class="alert alert-warning d-flex align-items-center justify-content-center">
+        <i class="bi bi-cart-x-fill me-2"></i>
+        <span>Your cart is empty.</span>
+      </div>
+      <div *ngIf="cart.length > 0">
+        <ul class="list-group mb-3">
+          <li *ngFor="let item of cart" class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <strong>{{ item.name }}</strong>
+              <span class="text-muted ms-2">> {{ item.quantity }} x {{ item.price }} €</span>
+            </div>
+            <span class="badge bg-primary rounded-pill">{{ item.quantity * item.price }} €</span>
+          </li>
+        </ul>
+        <div class="d-grid">
+          <button type="button" class="btn btn-success btn-lg" (click)="saveDataAndNavigate()">Checkout: {{ total }} €
+            <img src="assets/img/amex.png" alt="American Express" class="ms-2" style="width: 30px; height: auto;">
+            <img src="assets/img/mastercard.png" alt="Mastercard" class="ms-2" style="width: 30px; height: auto;">
+            <img src="assets/img/visa.png" alt="Visa" class="ms-2" style="width: 30px; height: auto;">
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
